@@ -14,3 +14,6 @@ class TestRoom(TestCase):
         expect(validate(Room('a-b-c-d-e-f-g-h-987[abcde]'))).to(be_true)
         expect(validate(Room('not-a-real-room-404[oarel]'))).to(be_true)
         expect(validate(Room('totally-real-room-200[decoy]'))).to(be_false)
+
+    def test_has_realname(self):
+        expect(Room('qzmt-zixmtkozy-ivhz-343[]').real_name).to(equal('very encrypted name'))

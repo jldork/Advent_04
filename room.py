@@ -6,6 +6,7 @@ class Room:
         self.name = self.get_name()
         self.sector_id = self.get_sector_id()
         self.checksum = self.get_checksum()
+        self.real_name = self.get_realname()
     
     def get_name(self):
         name_match = re.compile('([a-z]+\-)+').match(self.room_name)
@@ -23,6 +24,20 @@ class Room:
         end_index = self.room_name.find(']')
         
         return self.room_name[beginning_index:end_index]
+
+    def get_realname(self):
+        alphabet = 'abcdefghijklmnopqrstuvwxyz'*100
+
+        def translate(char, steps):
+            if char == '-':
+                return ' '
+            else:
+                new_index = alphabet.find(char) + steps
+                return alphabet[new_index]
+            
+        
+        exploded = [translate(char, self.sector_id) for char in list(self.name)]
+        return ''.join(exploded)
     
 
 def validate(room):
@@ -51,5 +66,7 @@ if __name__ == "__main__":
         room = Room(name)
         if validate(room):
             sum += room.sector_id
+            if 'pole' in room.real_name:
+                print('NORTH POLE STORAGE: ', room.sector_id)
     
     print(sum)
