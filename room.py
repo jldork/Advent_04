@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, Counter
 from functools import reduce
 import re
 
@@ -36,15 +36,12 @@ class Room:
             else:
                 new_index = alphabet.find(char) + steps
                 return alphabet[new_index]
-            
-        
-        exploded = [translate(char, self.sector_id) for char in list(self.name)]
-        return ''.join(exploded)
+             
+        return ''.join([translate(char, self.sector_id) for char in list(self.name)])
     
 
 def validate(room):
-    no_hyphens = room.name.replace("-", "")
-    counts = {char: str(no_hyphens.count(char)) for char in set(no_hyphens)}
+    counts = Counter(room.name.replace("-","")) 
     
     count_frequencies = defaultdict(list)
     for char, value in counts.items():
