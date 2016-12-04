@@ -1,3 +1,4 @@
+from functools import reduce
 import re
 
 class Room:
@@ -49,12 +50,11 @@ def validate(room):
             count_frequencies[value].append(char)
         else:
             count_frequencies[value] = [char]
-    
-    order = []
-    for frequency in iter(sorted(count_frequencies, reverse=True)):
-        order = order + sorted(count_frequencies[frequency])
 
-    return not any([char not in order[:5] for char in room.checksum]) 
+    reverse_sorted_count_frequencies = [sorted(count_frequencies[char], reverse=True) for char in sorted(count_frequencies)]
+    order = reduce((lambda x, y: x + y), reverse_sorted_count_frequencies)
+
+    return not any([char not in order[-5:] for char in room.checksum]) 
 
 
 if __name__ == "__main__":
