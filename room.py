@@ -1,3 +1,4 @@
+from collections import defaultdict
 from functools import reduce
 import re
 
@@ -44,12 +45,10 @@ class Room:
 def validate(room):
     no_hyphens = room.name.replace("-", "")
     counts = {char: str(no_hyphens.count(char)) for char in set(no_hyphens)}
-    count_frequencies = {}
+    
+    count_frequencies = defaultdict(list)
     for char, value in counts.items():
-        if value in count_frequencies.keys():
-            count_frequencies[value].append(char)
-        else:
-            count_frequencies[value] = [char]
+        count_frequencies[value].append(char)
 
     reverse_sorted_count_frequencies = [sorted(count_frequencies[char], reverse=True) for char in sorted(count_frequencies)]
     order = reduce((lambda x, y: x + y), reverse_sorted_count_frequencies)
