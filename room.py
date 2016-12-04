@@ -61,12 +61,8 @@ if __name__ == "__main__":
     with open('./input.txt', 'r') as f:
         names = [ line.rstrip('\n') for line in f.readlines() ]
     
-    sum = 0
-    for name in names:
-        room = Room(name)
-        if validate(room):
-            sum += room.sector_id
-            if 'pole' in room.real_name:
-                print('NORTH POLE STORAGE: ', room.sector_id)
+    valid_rooms = [Room(name) for name in names if validate(Room(name))]
+    print("Sum of valid room sector_id's: ", sum([ room.sector_id for room in valid_rooms ]) )
     
-    print(sum)
+    pole_rooms = [room.sector_id for room in valid_rooms if 'pole' in room.real_name]
+    print("sector_id for room with North Pole Storage:", pole_rooms)
